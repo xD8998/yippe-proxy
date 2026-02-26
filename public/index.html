@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stealth Proxy</title>
+    <style>
+        body { margin: 0; font-family: sans-serif; background: #1a1a1a; color: white; display: flex; flex-direction: column; height: 100vh; }
+        .tab-bar { display: flex; background: #222; padding: 10px; gap: 10px; align-items: center; border-bottom: 2px solid #333; }
+        .tab { background: #444; padding: 8px 16px; border-radius: 4px; cursor: pointer; user-select: none; transition: 0.2s; }
+        .tab:hover { background: #555; }
+        .search-container { flex-grow: 1; display: flex; justify-content: center; }
+        #search { width: 70%; padding: 10px 20px; border-radius: 20px; border: none; outline: none; background: #333; color: white; text-align: center; font-size: 16px; }
+        iframe { flex-grow: 1; border: none; width: 100%; background: white; }
+    </style>
+    <script src="/uv/uv.bundle.js"></script>
+    <script src="/uv/uv.config.js"></script>
+</head>
+<body>
+    <div class="tab-bar">
+        <div class="tab" onclick="goHome()">🏠 Home</div>
+        <div class="search-container">
+            <form onsubmit="event.preventDefault(); loadSite();">
+                <input type="text" id="search" placeholder="Search the web or type a URL..." autocomplete="off">
+            </form>
+        </div>
+    </div>
+    
+    <iframe id="proxy-frame" src="about:blank"></iframe>
+
+    <script>
+        // Register the Service Worker on load
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/uv/sw.js', {
+                scope: __uv$config.prefix
+            }).then(() => console.log('Proxy Engine Ready'));
+        }
+
+        function loadSite() {
+            let url = document.getElementById('search').value.trim();
+            if (!url) return;
+            
+            // Auto-format standard searches vs URLs
+            if (!/^https?:\/\//i.test(url)) {
+                if (url.includes('.') && !url.includes(' ')) {
+                    url = 'https://' + url;
+                } else {
+                    url = 'https://www.google.com/search?q=' + encodeURIComponent(url);
+                }
+            }
+
+            // Encode the URL and push it to the iframe
+            const encodedUrl = __uv$config.prefix + __uv$config.encodeUrl(url);
+            document.getElementById('proxy-frame').src = encodedUrl;
+        }
+
+        function goHome() {
+            document.getElementById('proxy-frame').src = 'about:blank';
+            document.getElementById('search').value = '';
+        }
+    </script>
+</body>
+</html>
