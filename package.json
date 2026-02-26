@@ -1,7 +1,7 @@
 {
-  "name": "stealth-web-proxy",
+  "name": "game-engine-server",
   "version": "1.0.0",
-  "description": "Ultraviolet proxy for Render",
+  "description": "Custom data interceptor",
   "main": "server.js",
   "type": "module",
   "scripts": {
@@ -10,6 +10,7 @@
   "dependencies": {
     "@titaniumnetwork-dev/ultraviolet": "^3.0.0",
     "@tomphttp/bare-server-node": "^2.0.1",
-    "express": "^4.18.2"
+    "express": "^4.18.2",
+    "express-basic-auth": "^1.2.1"
   }
 }
