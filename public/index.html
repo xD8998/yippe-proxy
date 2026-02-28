@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Stealth Proxy</title>
+    <title>Yippe Proxy</title>
     <style>
         body { margin: 0; font-family: sans-serif; background: #1a1a1a; color: white; display: flex; flex-direction: column; height: 100vh; }
-        .tab-bar { display: flex; background: #222; padding: 10px; gap: 10px; align-items: center; border-bottom: 2px solid #333; }
-        #search { flex-grow: 1; padding: 10px; border-radius: 20px; border: none; background: #333; color: white; text-align: center; }
+        .tab-bar { display: flex; background: #222; padding: 10px; border-bottom: 2px solid #333; }
+        #search { flex-grow: 1; padding: 12px; border-radius: 5px; border: none; background: #333; color: white; }
         iframe { flex-grow: 1; border: none; background: white; }
     </style>
     <script src="/uv/uv.bundle.js"></script>
@@ -13,7 +13,7 @@
 </head>
 <body>
     <div class="tab-bar">
-        <input type="text" id="search" placeholder="Loading proxy..." autocomplete="off">
+        <input type="text" id="search" placeholder="Type URL and hit Enter..." autocomplete="off">
     </div>
     <iframe id="proxy-frame" src="about:blank"></iframe>
 
@@ -23,9 +23,7 @@
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('/sw.js', {
                 scope: __uv$config.prefix
-            }).then(() => {
-                input.placeholder = "Search or type URL...";
-            });
+            }).then(() => console.log("Engine Ready"));
         }
 
         input.addEventListener('keydown', (e) => {
