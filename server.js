@@ -9,10 +9,8 @@ const bareServer = createBareServer('/bare/');
 const app = express();
 const server = createServer(app);
 
-// Serve everything in the public folder (index, config, sw)
 app.use(express.static(join(__dirname, 'public')));
 
-// Handle the proxy requests
 server.on('request', (req, res) => {
     if (bareServer.shouldRoute(req)) {
         bareServer.routeRequest(req, res);
@@ -21,7 +19,6 @@ server.on('request', (req, res) => {
     }
 });
 
-// Handle WebSockets (for games)
 server.on('upgrade', (req, socket, head) => {
     if (bareServer.shouldRoute(req)) {
         bareServer.routeUpgrade(req, socket, head);
