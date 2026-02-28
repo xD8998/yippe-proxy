@@ -9,13 +9,12 @@ const bareServer = createBareServer('/bare/');
 const app = express();
 const server = createServer(app);
 
-// Serve your custom HTML, CSS, and Service Worker config
+// 1. Serve the main UI and your custom config files
 app.use(express.static(join(__dirname, 'public')));
 
-// Serve the heavy-lifting Ultraviolet scripts directly from the npm package
-app.use('/uv/', express.static(join(__dirname, 'public/uv')));
+// 2. Serve the Ultraviolet engine files from the folder created by postinstall
+app.use('/uv/dist/', express.static(join(__dirname, 'public/uv/dist')));
 
-// Route network requests to the Bare server
 server.on('request', (req, res) => {
     if (bareServer.shouldRoute(req)) {
         bareServer.routeRequest(req, res);
@@ -24,7 +23,6 @@ server.on('request', (req, res) => {
     }
 });
 
-// Handle WebSocket connections (crucial for modern sites and games)
 server.on('upgrade', (req, socket, head) => {
     if (bareServer.shouldRoute(req)) {
         bareServer.routeUpgrade(req, socket, head);
