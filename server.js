@@ -13,7 +13,7 @@ const server = createServer(app);
 app.use(express.static(join(__dirname, 'public')));
 
 // Serve the heavy-lifting Ultraviolet scripts directly from the npm package
-app.use('/uv/', express.static(join(__dirname, 'node_modules/@titaniumnetwork-dev/ultraviolet/dist')));
+app.use('/uv/', express.static(join(__dirname, 'public/uv')));
 
 // Route network requests to the Bare server
 server.on('request', (req, res) => {
