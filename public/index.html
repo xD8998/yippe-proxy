@@ -28,36 +28,49 @@
     
     <iframe id="proxy-frame" src="about:blank"></iframe>
 
-    <script>
-        // Register the Service Worker on load
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('/uv/sw.js', {
-                scope: __uv$config.prefix
-            }).then(() => console.log('Proxy Engine Ready'));
+<script>
+    let swReady = false;
+
+    // Register the Service Worker
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/uv/sw.js', {
+            scope: __uv$config.prefix
+        }).then(() => {
+            console.log('Proxy Engine Ready');
+            swReady = true;
+            // This lets you know it's actually working!
+            document.getElementById('search').placeholder = "Ready! Type a URL...";
+        }).catch(err => {
+            console.error('Service Worker Failed:', err);
+            alert("Proxy Engine failed to start. Check the console (F12).");
+        });
+    }
+
+    function loadSite() {
+        if (!swReady) {
+            alert("Proxy is still loading, please wait a few seconds...");
+            return;
         }
 
-        function loadSite() {
-            let url = document.getElementById('search').value.trim();
-            if (!url) return;
-            
-            // Auto-format standard searches vs URLs
-            if (!/^https?:\/\//i.test(url)) {
-                if (url.includes('.') && !url.includes(' ')) {
-                    url = 'https://' + url;
-                } else {
-                    url = 'https://www.google.com/search?q=' + encodeURIComponent(url);
-                }
+        let url = document.getElementById('search').value.trim();
+        if (!url) return;
+        
+        if (!/^https?:\/\//i.test(url)) {
+            if (url.includes('.') && !url.includes(' ')) {
+                url = 'https://' + url;
+            } else {
+                url = 'https://www.google.com/search?q=' + encodeURIComponent(url);
             }
-
-            // Encode the URL and push it to the iframe
-            const encodedUrl = __uv$config.prefix + __uv$config.encodeUrl(url);
-            document.getElementById('proxy-frame').src = encodedUrl;
         }
 
-        function goHome() {
-            document.getElementById('proxy-frame').src = 'about:blank';
-            document.getElementById('search').value = '';
-        }
-    </script>
+        const encodedUrl = __uv$config.prefix + __uv$config.encodeUrl(url);
+        document.getElementById('proxy-frame').src = encodedUrl;
+    }
+
+    function goHome() {
+        document.getElementById('proxy-frame').src = 'about:blank';
+        document.getElementById('search').value = '';
+    }
+</script>
 </body>
 </html>
