@@ -1,13 +1,11 @@
 {
   "name": "stealth-web-proxy",
   "version": "1.0.0",
-  "description": "Ultraviolet proxy for Render",
-  "main": "server.js",
   "type": "module",
   "scripts": {
-  "start": "node server.js",
-  "postinstall": "mkdir -p public/uv/dist && cp -rv node_modules/@titaniumnetwork-dev/ultraviolet/dist/* public/uv/dist/"
-},
+    "start": "node server.js",
+    "postinstall": "mkdir -p public/uv && cp -rv node_modules/@titaniumnetwork-dev/ultraviolet/dist/* public/uv/"
+  },
   "dependencies": {
     "@titaniumnetwork-dev/ultraviolet": "^3.0.0",
     "@tomphttp/bare-server-node": "^2.0.1",
