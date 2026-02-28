@@ -1,0 +1,13 @@
+{
+  "name": "ultraviolet-app",
+  "version": "2.0.0",
+  "description": "A sophisticated web proxy.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js" 
+  },
+  "dependencies": {
+    "@titaniumnetwork-dev/ultraviolet": "^3.2.5",
+    "express": "^4.18.2"
+  }
+}
