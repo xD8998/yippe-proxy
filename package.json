@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
   "start": "node server.js",
-  "postinstall": "cp -r node_modules/@titaniumnetwork-dev/ultraviolet/dist/* ./public/uv/"
+  "postinstall": "mkdir -p public/uv/dist && cp -rv node_modules/@titaniumnetwork-dev/ultraviolet/dist/* public/uv/dist/"
 },
   "dependencies": {
     "@titaniumnetwork-dev/ultraviolet": "^3.0.0",
