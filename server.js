@@ -1,6 +1,7 @@
 import express from 'express';
 import { createServer } from 'node:http';
 import { createBareServer } from '@tomphttp/bare-server-node';
+import { uvPath } from '@titaniumnetwork-dev/ultraviolet';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 
@@ -9,7 +10,11 @@ const bareServer = createBareServer('/bare/');
 const app = express();
 const server = createServer(app);
 
+// 1. Serve your UI
 app.use(express.static(join(__dirname, 'public')));
+
+// 2. Serve UV files DIRECTLY from the library (Fixes the 404/MIME error)
+app.use('/uv/', express.static(uvPath));
 
 server.on('request', (req, res) => {
     if (bareServer.shouldRoute(req)) {
@@ -28,6 +33,4 @@ server.on('upgrade', (req, socket, head) => {
 });
 
 const PORT = process.env.PORT || 3000;
-server.listen(PORT, () => {
-    console.log(`Proxy running on port ${PORT}`);
-});
+server.listen(PORT, () => console.log(`Proxy on port ${PORT}`));
